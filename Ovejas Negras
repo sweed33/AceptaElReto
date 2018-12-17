@@ -1,0 +1,96 @@
+import java.util.Scanner;
+
+public class OvejasNegras {
+     static  boolean ovejablanca=false;
+   static int fil,col;
+   public static void main(String[] args) {
+        Scanner t=new Scanner(System.in);
+        while(t.hasNext()){
+           ovejablanca=false;
+           String[] campos=t.nextLine().split(" ");
+           col=Integer.parseInt(campos[0]);
+           fil=Integer.parseInt(campos[1]);
+           char[][] ch=new char[fil][col];
+           for(int i=0;i<fil;i++){
+               String f=t.nextLine();
+               for(int j=0;j<col;j++){
+                   ch[i][j]=f.charAt(j);
+               }
+           }
+           
+           for(int i=1;i<fil-1&&ovejablanca==false;i++){
+               for(int j=1;j<col-1&&ovejablanca==false;j++){
+                 if(ch[i][j]=='.'){
+                     int cc=0;
+                     if(ch[i-1][j]=='X')cc++;
+                     if(ch[i+1][j]=='X')cc++;
+                     if(ch[i][j-1]=='X')cc++;
+                     if(ch[i][j+1]=='X')cc++;
+                     if(cc==4){
+                         ovejablanca=true;
+                     }else if(cc>=2){
+                         ch[i][j]='X';
+                         ovejablanca=buscar(ch,i,j);
+                     }
+                 }
+               }
+               
+        }
+           if(ovejablanca)System.out.println("SI");
+           else System.out.println("NO");
+    }}
+    private static boolean buscar(char[][] ch, int i, int j) {
+        boolean salir=false,salir1=false,salir2=false,salir3=false,salir4=false;;
+        int i2=i;
+        int j2=j;
+        if(i2>0){
+            if(ch[i2-1][j2]=='.'&&i2-1==0){
+                salir=true;
+            }
+        }
+        if(j2>0){
+            if(ch[i2][j2-1]=='.'&&j2-1==0){
+               salir=true;
+            }
+        }
+        if(i2<fil-1){
+            if(ch[i2+1][j2]=='.'&&i2+1==fil-1){
+                salir=true;
+            }
+        }
+        if(j2<col-1){
+            if(ch[i2][j2+1]=='.'&&j2+1==col-1){
+                salir1=true;
+            }
+        }
+        if(i2>0){
+           if(ch[i2-1][j2]=='.'){
+                ch[i2-1][j2]='X';
+              if(!buscar(ch,i2-1,j2))salir1=true;
+               
+            }
+        }
+        if(j2>0){
+            if(ch[i2][j2-1]=='.'){
+                ch[i2][j2-1]='X';
+                if(!buscar(ch,i2,j2-1))salir2=true;
+               
+            }
+        }
+        if(i2<fil-1){
+            if(ch[i2+1][j2]=='.'){
+                ch[i2+1][j2]='X';
+             if(!buscar(ch,i2+1,j2))salir3=true;
+            }
+        }
+        if(j2<col-1){
+            if(ch[i2][j2+1]=='.'){
+                ch[i2][j2+1]='X';
+             if(!buscar(ch,i2,j2+1))salir4=true;
+               
+            }
+        }
+        if(!salir&&!salir1&&!salir2&&!salir3&&!salir4)return true;
+        else return false;
+    }
+}
