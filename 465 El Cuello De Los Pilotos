@@ -1,0 +1,157 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class ElCuelloDeLosPilotos{
+    ArrayList<String> a=new ArrayList<>();
+    public static void main(String[] args){
+        Scanner t=new Scanner(System.in);
+        while(t.hasNext()){
+            int col=t.nextInt();
+            int fil=t.nextInt();
+            int filo=0,colo=0;
+            t.nextLine();
+            char[][] c=new char[fil][col];
+            for(int i=0;i<fil;i++){
+                String f=t.nextLine();
+                for(int j=0;j<f.length();j++){
+                    if(f.charAt(j)=='O'){
+                        filo=i;
+                        colo=j;
+                    }
+                    c[i][j]=f.charAt(j);
+                }
+            }
+            int dir=0;
+            int posx=0,posy=0,diry=0,dirx=0;
+            if(filo==0)dir=0;
+            else if(colo==0) dir=3;
+            else if(colo==col-1)dir=1;
+            else if(filo==fil-1)dir=2;
+            else{
+                boolean hay=false;
+                if(filo-1>=0){
+                    if(c[filo-1][colo]=='#'){
+                        hay=true;
+                        dir=3;
+                    }
+                }
+                if(colo-1>=0&&!hay){
+                    if(c[filo][colo-1]=='#'){
+                        hay=true;
+                        dir=2;
+                    }
+                }
+                if(colo+1<col&&!hay){
+                    if(c[filo][colo+1]=='#'){
+                        hay=true;
+                        dir=0;
+                    }
+                }
+                if(filo+1<fil&&!hay){
+                    if(c[filo+1][colo]=='#'){
+                        dir=1;
+                    }
+                }
+            }
+            int der=0,izq=0;
+            switch(dir){
+                case 0:
+                    c[filo][colo]='-';
+                    posx=filo;
+                    posy=colo+1;
+                    diry=1;
+                    dirx=0;
+                    break;
+                case 1:
+                    c[filo][colo]='-';
+                    posx=filo+1;
+                    posy=colo;
+                    diry=0;
+                    dirx=1;
+                    break;
+                case 2:
+                    c[filo][colo]='-';
+                    posx=filo;
+                    posy=colo-1;
+                    diry=-1;
+                    dirx=0;
+                    break;
+                case 3:
+                    c[filo][colo]='-';
+                    posx=filo-1;
+                    posy=colo;
+                    diry=0;
+                    dirx=-1;
+                    break;
+            }
+            int mov=0;
+            while(c[posx][posy]!='-'){
+                    c[posx][posy]='.';
+                    boolean hay=false;
+                    if(posy+1<col){
+                        if(c[posx][posy+1]=='#'){
+                            c[posx][posy+1]='.';
+                            hay=true;
+                            posy++;
+                            if(diry==0&&dirx==-1)der++;
+                            else if(diry==0&&dirx==1)izq++;
+                            diry=1;
+                            dirx=0;
+                        }else if(c[posx][posy+1]=='-'&&mov>1){
+                            if(diry==0&&dirx==-1)der++;
+                            else if(diry==0&&dirx==1)izq++;
+                            break;
+                        }
+                    
+                    }
+                    if(posx+1<fil&&!hay){
+                        if(c[posx+1][posy]=='#'){
+                            c[posx+1][posy]='.';
+                            hay=true;
+                            posx++;
+                            if(diry==-1&&dirx==0)izq++;
+                            else if(diry==1&&dirx==0)der++;
+                            diry=0;
+                            dirx=1;
+                        }else if(c[posx+1][posy]=='-'&&mov>1){
+                            if(diry==-1&&dirx==0)izq++;
+                            else if(diry==1&&dirx==0)der++;
+                            break;
+                        }
+                    }
+                    if(posx-1>=0&&!hay){
+                        if(c[posx-1][posy]=='#'){
+                            c[posx-1][posy]='.';
+                            hay=true;
+                            posx--;
+                            if(diry==-1&&dirx==0)der++;
+                            else if(diry==1&&dirx==0)izq++;
+                            diry=0;
+                            dirx=-1;
+                        }else if(c[posx-1][posy]=='-'&&mov>1){
+                            if(diry==-1&&dirx==0)der++;
+                            else if(diry==1&&dirx==0)izq++;
+                            break;
+                        }
+                    }
+                    if(posy-1>=0&&!hay){
+                        if(c[posx][posy-1]=='#'){
+                            c[posx][posy-1]='.';
+                            posy--;
+                            if(diry==0&&dirx==1)der++;
+                            else if(diry==0&&dirx==-1)izq++;
+                            diry=-1;
+                            dirx=0;
+                        }else if(c[posx][posy-1]=='-'&&mov>1){
+                            if(diry==0&&dirx==1)der++;
+                            else if(diry==0&&dirx==-1)izq++;
+                            break;
+                        }
+                    }
+                    mov++;
+                }
+                if(der<izq)System.out.println(der+" "+izq);
+                else System.out.println(izq+" "+der);
+        }
+    }
+}
