@@ -1,0 +1,62 @@
+import java.util.Scanner;
+public class TomasIneditas {
+    public static void main(String[] args) {
+       Scanner t=new Scanner(System.in);
+       while(t.hasNext()){
+            String f=t.nextLine();
+            int len=f.length();
+            int col=len+2;
+            int fil=len+2;
+            char[][] a=new char[fil][col];
+
+            for(int i=0;i<fil;i++){
+                for(int j=0;j<col;j++){
+                        a[i][j]='0';
+                }
+            }
+            for(int i=0;i<fil;i++){
+                a[i][0]='#';
+                a[i][col-1]='#';
+            }
+            for(int i=1;i<col-1;i++){
+                a[fil-1][i]='#';
+            }
+            
+            int alt=fil-2;
+            int altmax=alt;
+            int lon=1;
+            
+            for(int i=0;i<len;i++){
+                if(f.charAt(i)=='S'){
+                    a[alt][lon]='/';
+                    if(alt<altmax)altmax=alt;
+                    alt--;
+                }
+                if(f.charAt(i)=='B'){
+                    alt++;
+                    a[alt][lon]='\\';
+                 }
+                if(f.charAt(i)=='I'){
+                    a[alt][lon]='_';
+                    if(alt<altmax)altmax=alt;
+                }
+                 lon++;
+            }
+            
+            for(int i=0;i<fil;i++){
+                for(int j=0;j<col;j++){
+                    if(a[i][j]=='0'){
+                        a[i][j]=' ';
+                     }
+                }
+            }
+            
+            for(int i=0;i<col;i++)System.out.print("#");
+            System.out.println();
+            for(int i=altmax;i<fil;i++){
+               for(int j=0;j<col;j++)System.out.print(a[i][j]);
+               System.out.println();
+            }
+        }
+    }
+}
